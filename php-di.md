@@ -136,7 +136,7 @@ $c = $app->getContainer();
 
 **PHP-DI**
 
-Para utilizar o PHP-DI é necessário instalar o pacote `php-di/slim-bridge` via composer e por conveniência, é aconselhada a criação de uma nova classe `App` ([Figura 3](#fig3)). O arquivo `config/dependencies.php` deixa de ser necessário e o método `getContainer()`, apesar de ainda existir, não é mais utilizado. O único ponto de definição de dependências são os arquivos `config/settings{.local,}.php`
+Para utilizar o PHP-DI é necessário instalar o pacote `php-di/slim-bridge` via composer e, por conveniência, é aconselhada a criação de uma nova classe `App` ([Figura 3](#fig3)). O arquivo `config/dependencies.php` deixa de ser necessário e o método `getContainer()`, apesar de ainda existir, não é mais utilizado. O único ponto de definição de dependências são os arquivos `config/settings{.local,}.php`
 
 <sup id="fig3"></sup>
 ```php
@@ -603,3 +603,7 @@ $keyInstance = $c->get('key');
 <center><small>Figura 11. Restrição de uso da notação de índice.</small></center>
 
 ---
+
+## Um exemplo completo
+
+É possível visualizar um exemplo completo de uso do **PHP-DI** e **Slim** no projeto [emailprovider](https://github.com/marciodojr/emailprovider).
