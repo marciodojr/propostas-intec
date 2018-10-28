@@ -84,6 +84,7 @@ $c[ConfirmationEntity::class] = function ($c) {
 ```
 <center><small> Figura 1. Exemplo de utilização do Pimple.</small></center>
 
+---
 
 No entanto, alguns pontos negativos são detectados:
 
@@ -130,6 +131,8 @@ $app = new \Slim\App([
 $c = $app->getContainer();
 ```
 <center><small>Figura 2. Configuração da aplicação com o Pimple.</small></center>
+
+---
 
 **PHP-DI**
 
@@ -179,6 +182,8 @@ class App extends DIBridgeApp
 ```
 <center><small>Figura 3. Configuração da aplicação com o PHP-DI.</small></center>
 
+---
+
 ### Tipos de dependências
 
 Para auxiliar no entendimento do uso do PHP-DI e na forma como as dependencias são organizados no projeto, classificaremos as dependências da seguinte forma:
@@ -192,6 +197,7 @@ Para auxiliar no entendimento do uso do PHP-DI e na forma como as dependencias s
 A [Figura 4](#fig4) apresenta os tipos de dependências.
 
 
+
 <sup id="fig4"></sup>
 ```php
 <?php
@@ -201,6 +207,9 @@ return [
 // ...
 ```
 <center><small>Figura 4a. Exemplo de dependência de tipo primitivo.</small></center>
+
+
+
 
 ```php
 <?php
@@ -281,6 +290,8 @@ $c['logger'] = function ($c) {
 ```
 <center><small>Figura 4e. Exemplo de dependência de funções anônimas.</small></center>
 
+---
+
 ### Objetivo
 
 Através da utilização do PHP-DI é esperado que todas as definições de dependências do tipo objeto homogênio sejam eliminadas e as definições de objeto heterogênio sejam simplificadas. Isso é possível através do recurso de [autowiring](http://php-di.org/doc/autowiring.html).
@@ -352,6 +363,8 @@ return [
     //..
 ```
 <center><small>Figura 5. Planificação das configurações.</small></center>
+
+---
 
 2. Como as dependências do tipo objeto heterogênio e funções anônimas serão movidas para o arquivo `config/settings.php`, é esperado um aumento significativo em seu tamanho inicial e futuro, no entanto, o crescimento ao longo do tempo deve ser significativamente menor do que o crescimento atual do arquivo `config/dependencies` ([Figura 6](#fig6)).
 
@@ -440,6 +453,8 @@ return [
 ```
 <center><small>Figura 6. Exemplo de definição de objetos heterogênios e funções anônimas.</small></center>
 
+---
+
 3. A injeção de argumentos de rotas deve ser direta ao invés de utilizar um array de argumentos ([Figura 7](#fig7)).
 
 
@@ -463,6 +478,8 @@ $app->post('/virtual-domain/{domainId}', function ($request, $response, $domainI
 ```
 <center><small>Figura 7. Injeção direta de argumentos de rota.</small></center>
 
+---
+
 4. Elimina-se a possibilidade de uso de dependências no estilo do Slim (invocação de métodos não estáticos através da notação *MyClass:method*). O uso deve ser via método `__invoke` apenas, conforme ([Figura 8](#fig8)).
 
 <sup id="fig8"></sup>
@@ -480,6 +497,8 @@ $app->post('/login', Login::class . ':login');
 $app->post('/login', Login::class);
 ```
 <center><small>Figura 8. Restrição de uso da notação *MyClass:method*.</small></center>
+
+---
 
 5. Elimina-se a possibilidade do uso de parâmetros sem tipo e com nome arbitrário na invocação de rotas (funções anônimas e __invoke em actions, middlewares e handlers). A [Figura 9](#fig9) ilustra as diferenças.
 
@@ -510,6 +529,8 @@ public function __invoke(Request $req, Response $resp)
 }
 ```
 <center><small>Figura 9. Restrição de nomes de parâmetros sem tipo definido.</small></center>
+
+---
 
 6. Permite o uso de parâmetros em ordem arbitrária, ver [Figura 10](#fig10).
 
@@ -549,6 +570,8 @@ public function __invoke($name, Response $resp)
 ```
 <center><small>Figura 10. Relaxamento da ordem de parâmetros.</small></center>
 
+---
+
 Para uma descrição completa da integração do PHP-DI e Slim consulte a [documentação](http://php-di.org/doc/frameworks/slim.html).
 
 7. Nos raros casos onde é necessário manipular as dependências do container (por exemplo,testes), o uso deve ser via PSR-11 (uso dos métodos `get` e `set` ao invés de índice `[]`) conforme [Figura 11](#fig11).
@@ -578,3 +601,5 @@ $keyInstance = $c->get('key');
 
 ```
 <center><small>Figura 11. Restrição de uso da notação de índice.</small></center>
+
+---
